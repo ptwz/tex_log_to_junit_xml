@@ -79,6 +79,12 @@ message~/Warning:/{
 	new_msg("error");
 	}
 
+message~/Undefined control/{
+	failure_count+=1;
+	id=failure_count;
+	new_msg("fail");
+	}
+
 message~/to continue.$/{
 	failure_count+=1;
 	id=failure_count;
