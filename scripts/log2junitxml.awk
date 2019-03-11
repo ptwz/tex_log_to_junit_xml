@@ -1,4 +1,4 @@
-## 
+##
 # Convert the output form TeX that has been filtered by parselog.awk
 # into a JUnit XML format
 #
@@ -25,7 +25,7 @@ function to_xml_text(str, i, tmp, c, r, printable){
 				printable = 1;
 				# mask only things that might break XML, leave UTF-8
 				# data pass the filter
-				if (tmp < 0x30) 
+				if (tmp < 0x30)
 					printable = 0;
 				if ( (tmp >= 0x3A) && (tmp <= 0x40) )
 					printable = 0;
@@ -48,7 +48,8 @@ BEGIN{
 {
 	#print to_xml_text($0)
 	filename=$1;
-	lineno=$2;
+	trace=$2;
+	gsub("->", "\n ", trace);
 	message="";
 	for (i=3; i<=NF; i++)
 		message=message "|" $i;
@@ -65,6 +66,7 @@ function new_msg(class){
 	filename_count[filename]+=1;
 	id = filename":"filename_count[filename];
 	classes[id]=class;
+    traces[id]=trace;
 	}
 
 message~/Package.*Error:/{
@@ -119,6 +121,10 @@ END{
 						type="failure";
 
 					print "   <"type" message=\""to_xml_text(messages[id])"\">";
+					print "<![CDATA[";
+					print " Include stack:" traces[id];
+					print "\nMessages:\n" messages[id];
+					print "]]>";
 					print "   </"type">";
 				}
 			print("  <system-out>");
