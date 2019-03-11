@@ -93,7 +93,7 @@ message~/to continue.$/{
 	}
 
 in_type!=""{
-	messages[id]=messages[in_type,id]"\n"message;
+	messages[id]=messages[id]"\n"message;
 	}
 
 {

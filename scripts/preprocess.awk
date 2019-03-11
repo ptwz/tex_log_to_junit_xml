@@ -10,6 +10,9 @@ BEGIN{ in_msg = 0;}
 	in_msg = 1
 	}
 
+/^! Undefined control sequence/{
+	in_msg=1;
+	}
 
 /Package .* Warning:/{
 	in_msg = 1
@@ -27,7 +30,7 @@ BEGIN{ in_msg = 0;}
 	in_msg = 1;
 	}
 
-/^$/ || /^)/{
+/^$/ || /)$/ || /^)/{
 	in_msg = 0;
 }
 

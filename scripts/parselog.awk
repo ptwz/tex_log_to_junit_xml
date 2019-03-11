@@ -47,7 +47,7 @@ function pop(){
 	}
 
 function peek(j){
-	j=stack_depth;
+	j=stack_depth-1;
 	while ( (j>0) && (stack[j]=="FLUFF")) { j-=1; }
 
 	return stack[j];
@@ -75,7 +75,7 @@ function done_here(){
 
 skip==0{
 	for (i=1; i<=NF; i++){
-		print peek(),i"|" $i;
+		print peek(), i, $i;
 		}
 	}
 
