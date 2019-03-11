@@ -75,7 +75,7 @@ function done_here(){
 
 skip==0{
 	for (i=1; i<=NF; i++){
-		print peek(), i, $i;
+		print peek(), stack_repr(), $i;
 		}
 	}
 
