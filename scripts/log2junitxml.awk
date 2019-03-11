@@ -1,3 +1,12 @@
+## 
+# Convert the output form TeX that has been filtered by parselog.awk
+# into a JUnit XML format
+#
+# This takes the preprocessed output from parselog.awk and
+# tries to find warnining/error/failure messages and formats them
+# to be parsed by a JUnit XML consumer like Jenkins or other CI
+# tools.
+
 BEGIN{
 	for (i=0; i<=127; i++){
 		c=sprintf("%c", i);
@@ -14,7 +23,8 @@ function to_xml_text(str, i, tmp, c, r, printable){
 				if (tmp == "" ) tmp = 0xff; # Disregard chars that are not found
 				# like UTF-8
 				printable = 1;
-				# mask only things that might break XML
+				# mask only things that might break XML, leave UTF-8
+				# data pass the filter
 				if (tmp < 0x30) 
 					printable = 0;
 				if ( (tmp >= 0x3A) && (tmp <= 0x40) )
@@ -50,7 +60,6 @@ BEGIN{
 }
 
 function new_msg(class){
-#	print "new_msg("class")";
 	in_type=class;
 	class_count[class]+=1;
 	filename_count[filename]+=1;

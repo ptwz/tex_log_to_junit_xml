@@ -1,3 +1,9 @@
+##
+# Prepare a TeX log file for parsing
+#
+# This script removes brackets from lines TeX quoted from the original
+# input in order to avoid breaking a bracket-searching parser.
+
 BEGIN{ in_msg = 0;}
 
 /Package .* Info:/{

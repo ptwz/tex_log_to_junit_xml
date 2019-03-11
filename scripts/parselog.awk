@@ -1,3 +1,23 @@
+##
+# Parse a TeX log file into a better machine readable form
+#
+# This takes the round-bracket notation used by TeX nd transforms it into
+# a kind of greppable "stack-strace" form.
+#
+# Note:
+# It is meant to be used behind a pipe from preprocess.awk which does strip
+# unnecessary or potentially misleading brackets.
+# 
+# Example input:
+# (test.tex (first-include.tex
+# LaTeX Error: Blah...
+#
+# ))
+#
+# Example output:
+# test.tex->first-include.tex|1|LaTex Error: Blah...
+
+
 BEGIN{
 	RS="[()]";
 	FS="[\n\r]";
@@ -26,8 +46,11 @@ function pop(){
 	return r
 	}
 
-function peek(){
-	return stack[stack_depth-1];
+function peek(j){
+	j=stack_depth;
+	while ( (j>0) && (stack[j]=="FLUFF")) { j-=1; }
+
+	return stack[j];
 }
 
 function done_here(){
