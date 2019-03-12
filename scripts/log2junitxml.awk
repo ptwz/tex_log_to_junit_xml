@@ -69,29 +69,35 @@ function new_msg(class){
     traces[id]=trace;
 	}
 
-message~/Package.*Error:/{
+message~/^! Package.*Error:/{
 	error_count += 1;
 	id=error_count;
 	new_msg("error");
 	}
 
-message~/Warning:/{
+message~/^!.*TeX Error:/{
 	error_count += 1;
 	id=error_count;
 	new_msg("error");
 	}
 
-message~/Undefined control/{
+message~/TeX Warning:/ || message~/^Package .* Warning:/{
+	error_count += 1;
+	id=error_count;
+	new_msg("error");
+	}
+
+message~/^Undefined control/{
 	failure_count+=1;
 	id=failure_count;
 	new_msg("fail");
 	}
 
-message~/to continue.$/{
-	failure_count+=1;
-	id=failure_count;
-	new_msg("fail");
-	}
+#message~/type command to continue.$/{
+#	failure_count+=1;
+#	id=failure_count;
+#	new_msg("fail");
+#	}
 
 (message=="")&&(in_type!=""){
 #	print "msg ended "id;

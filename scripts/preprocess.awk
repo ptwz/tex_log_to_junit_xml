@@ -22,7 +22,11 @@ BEGIN{ in_msg = 0;}
 	in_msg = 1
 	}
 
-/LaTeX Warning:/{
+/TeX Warning:/{
+	in_msg = 1;
+}
+
+/TeX Error:/{
 	in_msg = 1;
 }
 
