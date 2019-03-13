@@ -17,6 +17,16 @@
 # Example output:
 # test.tex->first-include.tex|1|LaTex Error: Blah...
 
+# The idea is to (ab)use the field separator (FS) and record separator (RS)
+# mechanisms. By setting RS to match round braces and FS to newlines,
+# each iteration of this code will revolve around text in round brackets,
+# and the fields ($1..$NF) will be lines
+#
+# There is one excecption from this rule: By heuristics the codes tries to
+# determine wether the text after the opening brace is a filename, if not
+# this is considered "fluff" and is output. Therefore sometimes text runs
+# that contain round braces that are not file names might be broken into
+# multiple lines.
 
 BEGIN{
 	RS="[()]";
@@ -54,6 +64,7 @@ function peek(j){
 }
 
 function done_here(){
+	LT=RT;
 	next;
 	}
 
@@ -84,6 +95,5 @@ RT~")"{
 	}
 
 {
-	LT=RT;
 	done_here();
 	}
