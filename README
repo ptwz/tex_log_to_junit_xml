@@ -1,0 +1,31 @@
+Basics
+=====
+This tool is intended to ease interfacing between a CI system (like Jenkins) and a LaTeX build toolchain.
+
+In order to be able to use TeX error messages in a meaningful way in CI systems, you need to preprocess the (La)TeX output in a way a CI system understands the sometime quite ambigious messages output by TeX.
+
+Theory of operation
+=====
+The three step process is implemented in discrete AWK files:
+
+1st stage: Unwrapping (TeX kindly wraps its console output ar 79 characters), replace all round brackets in messages by hash signs. Some magics are applied in order to determine if text is a message (info/warning/error) in contrast to TeX managerial output (file open/close/page count/etc).
+This is done in order not to confuse the next processing stages with unexpected bracked.
+
+2nd stage: Determine when TeX opens/closes a file and build a kind of "include tree" from this information. This is done by parsing the opening/closing of round brackets and again some magic.
+The output of this stage contains the two additional columns in front:
+ - The current file name TeX seems to process when outputting a log line
+ - The "include-stack" that lead to including the file in the first place, separator is "->" there
+
+3rd stage: Collect and group (error) messages from previous steps, and output XML.
+
+Conventions
+=====
+The following classification conventions have been implemented by the author. These are not necessarily right and are highly subjective but may provide a certain starting point for own setups.
+
+All TeX and package errors are considered "errors" in JUnit terminology. Every time the interpreter drops in a command prompt is considered a failure.
+
+Outlook
+=====
+The mutistage setup will enable you to maybe build more interesting and cool things with the code that are not necessarily related to JUnit-output or CI systems.
+
+I'd like to port this to python but currently this was the easiest way for me to prototype the code and build a quick PoC. I am aware of a JS library that seems to scratch my itch, but I could not be bothered making JS code run on the command line.
