@@ -34,9 +34,18 @@ BEGIN{ in_msg = 0;}
 	in_msg = 1;
 	}
 
+/This is .*TeX, Version/{
+	in_msg = 2;
+	}
+
+/^\*\*/ && (in_msg==2){
+	in_msg = 0;
+	}
+
 /^$/ || /)$/ || /^)/{
 	in_msg = 0;
 }
+
 
 in_msg{
 	gsub("[()]","#");

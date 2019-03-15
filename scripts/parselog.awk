@@ -38,18 +38,20 @@ BEGIN{
 
 function stack_repr(i,r){
 	r = ""
-	for (i=0; i<stack_depth; i++) r = r "->" stack[i];
+	for (i=0; i<stack_depth; i++) r = r stack[i] "->";
 	return r;
 	}
 
 function push(name){
 	stack[stack_depth++]=name;
-	#print "PUSH"name"PUSH"$0;
+	#print "PUSH>"name"<PUSH"stack_depth#$0;
 	}
 
-function pop(){
-	if (stack_depth==0)
+function pop(r){
+	if ((stack_depth==1) && (stack[stack_depth-1]!="FLUFF")){
+		print "ERROR:Tried to pop under root"
 		return;
+	}
 	r = stack[--stack_depth];
 	#print "POP"r"POP";
 	#print_stack();
@@ -90,7 +92,7 @@ skip==0{
 		}
 	}
 
-RT~")"{
+RT==")"{
 	x=pop();
 	}
 
