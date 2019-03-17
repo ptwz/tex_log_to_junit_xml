@@ -18,11 +18,19 @@ The output of this stage contains the two additional columns in front:
 
 3rd stage: Collect and group (error) messages from previous steps, and output XML.
 
+Prerequisits
+=====
+This tool package is developed with bash and GNU AWK 4.1.4, but I am sure most halfway recent GNU AWKs will do the job.
+
 Conventions
 =====
 The following classification conventions have been implemented by the author. These are not necessarily right and are highly subjective but may provide a certain starting point for own setups.
 
 All TeX and package errors are considered "errors" in JUnit terminology. Every time the interpreter drops in a command prompt is considered a failure.
+
+Usage
+=====
+To build a TeX file just call "build_tex.sh" which will take care of calling the multistage AWK scripts. Currently it wants to run LuaLaTex but you can simply adapt it.
 
 Outlook
 =====
