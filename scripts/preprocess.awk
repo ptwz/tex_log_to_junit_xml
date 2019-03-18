@@ -6,58 +6,61 @@
 
 BEGIN{ in_msg = 0;}
 
-/Package .* Info:/{
+{
+	cur_line = cur_line $0;
+}
+
+cur_line~/^$/ || cur_line~/)$/ || cur_line~/^)/ || cur_line~/^[(][./]/ || cur_line~/^[<]/ || cur_line~/^\[/ {
+	in_msg = 0;
+}
+
+cur_line~/Package .* Info:/{
 	in_msg = 1
 	}
 
-/^! Undefined control sequence/{
+cur_line~/^! Undefined control sequence/{
 	in_msg=1;
 	}
 
-/Package .* Warning:/{
+cur_line~/Package .* Warning:/{
 	in_msg = 1
 	}
 
-/Package .* Error:/{
+cur_line~/^File/ && cur_line~/Graphic file/{
+    in_msg = 1;
+    }
+
+cur_line~/Package .* Error:/{
 	in_msg = 1
 	}
 
-/TeX Warning:/{
+cur_line~/TeX Warning:/{
 	in_msg = 1;
 }
 
-/TeX Error:/{
+cur_line~/TeX Error:/{
 	in_msg = 1;
 }
 
-/^Overfull / || /^Underfull /{
+cur_line~/^Overfull / || cur_line~/^Underfull /{
 	in_msg = 1;
 	}
 
-/This is .*TeX, Version/{
+cur_line~/This is .*TeX, Version/{
 	in_msg = 2;
 	}
 
-/^\*\*/ && (in_msg==2){
+cur_line~/^\*\*/ && (in_msg==2){
 	in_msg = 0;
-	}
-
-/^$/ || /)$/ || /^)/ || /^[(][./]/{
-	in_msg = 0;
-}
-
-
-in_msg{
-	gsub("[()]","#");
 	}
 
 {
 	#print in_msg"|"$0;
-	cur_line = cur_line $0;
 
 	if (length($0) >= 79){
 		next;
 		}
+    if (in_msg) gsub("[)(]","#",cur_line);
 	print cur_line;
 	cur_line = "";
 }
