@@ -75,7 +75,7 @@ function done_here(){
 	skip = 0;
 }
 
-(/\.tex/ || /\.sty/ || /\.cls/ || /\.def/ || /\.clo/ || /\.ldf/) && (LT=="("){
+(/\.tex/ || /\.sty/ || /\.cls/ || /\.def/ || /\.clo/ || /\.ldf/ || /\.aux/) && (LT=="("){
 	x= $1;
 	push(x);
 	skip = 1;

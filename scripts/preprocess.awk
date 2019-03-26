@@ -10,7 +10,12 @@ BEGIN{ in_msg = 0;}
 	cur_line = cur_line $0;
 }
 
-cur_line~/^$/ || cur_line~/)$/ || cur_line~/^)/ || cur_line~/^[(][./]/ || cur_line~/^[<]/ || cur_line~/^\[/ {
+(in_msg==1) && ( cur_line~/^$/ || cur_line~/)$/ || cur_line~/^)/ || cur_line~/^[(][./]/ || cur_line~/^[<]/ || cur_line~/^\[/ ) {
+	in_msg = 0;
+}
+
+(in_msg==3) && ( cur_line~/^$/ ) {
+	# Message class for Over/Underfull
 	in_msg = 0;
 }
 
@@ -26,7 +31,7 @@ cur_line~/Package .* Warning:/{
 	in_msg = 1
 	}
 
-cur_line~/^File/ && cur_line~/Graphic file/{
+cur_line~/^File/ || cur_line~/Graphic file/{
     in_msg = 1;
     }
 
@@ -43,7 +48,7 @@ cur_line~/TeX Error:/{
 }
 
 cur_line~/^Overfull / || cur_line~/^Underfull /{
-	in_msg = 1;
+	in_msg = 3;
 	}
 
 cur_line~/This is .*TeX, Version/{
@@ -57,7 +62,7 @@ cur_line~/^\*\*/ && (in_msg==2){
 {
 	#print in_msg"|"$0;
 
-	if (length($0) >= 79){
+	if (length($0) > 79){
 		next;
 		}
     if (in_msg) gsub("[)(]","#",cur_line);
