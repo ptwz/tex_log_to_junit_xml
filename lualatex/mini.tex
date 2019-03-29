@@ -1,0 +1,23 @@
+\documentclass[german, 10pt, a4paper]{article}
+\usepackage{expl3}
+
+\ExplSyntaxOn
+\makeatletter
+\let\typeout@\typeout
+\def\typeout#1{\typeout@{#1}\directlua{hallo('\lua_escape:n{#1}')}}
+\makeatother
+\ExplSyntaxOff
+
+\begin{document}
+%\date{}
+%\maketitle
+Hallo Welt!
+\typeout{Das ist ein 'test}
+%\ExplSyntaxOn
+%\msg_new:nnnn {test} {msgname} {Nachricht #1 } {Egal}
+%\directlua{hallo()}
+%\msg_info:nnn {test} {msgname} {Hallo}
+%%\msg_error:nnn {test} {msgname} {Hallo}
+%\ExplSyntaxOff
+
+\end{document}
