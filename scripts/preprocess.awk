@@ -3,6 +3,11 @@
 #
 # This script removes brackets from lines TeX quoted from the original
 # input in order to avoid breaking a bracket-searching parser.
+# Also it removes the autmatic console output wrapping done by latex
+# by default (whose effect can be lessened in texmf.cnf) using
+#  error_line = 254
+#  half_error_line = 128
+#  max_print_line = 65534
 
 BEGIN{ in_msg = 0;}
 
